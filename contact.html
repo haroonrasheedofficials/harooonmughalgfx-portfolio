@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Haroon Mughal</title>
+<meta name="description" content="Contact Haroon Mughal (haroonmughalgfx) about a logo, branding, vector conversion, print or custom graphic design project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,470;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="atmosphere" aria-hidden="true">
+  <span class="blob blob-a"></span>
+  <span class="blob blob-b"></span>
+  <span class="blob blob-c"></span>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-row">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">HM</span>
+      <span class="brand-name">Haroon&nbsp;Mughal</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="portfolio.html" class="nav-link">Portfolio</a>
+      <a href="contact.html" class="nav-link is-active" aria-current="page">Contact</a>
+    </nav>
+
+    <a href="contact.html" class="btn btn-ghost header-cta">Start a Project</a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ PAGE HEADER ============ -->
+  <section class="page-header">
+    <div class="wrap" data-reveal>
+      <p class="eyebrow">Get In Touch</p>
+      <h1 class="page-title">Let's create something worth seeing.</h1>
+      <p class="page-desc">Have a logo, branding project, vector conversion, print design, or custom graphic in mind? Tell me what you're working on and let's discuss how I can help.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT LAYOUT ============ -->
+  <section class="section contact-section" data-reveal>
+    <div class="wrap contact-grid">
+
+      <!-- LEFT: Info -->
+      <div class="contact-info" data-reveal>
+        <p class="contact-intro">I take on a limited number of design projects at a time so each one gets proper attention — from a single logo to a full print-ready set.</p>
+
+        <dl class="contact-facts">
+          <div class="contact-fact">
+            <dt>Email</dt>
+            <dd><a href="mailto:your@email.com">your@email.com</a></dd>
+          </div>
+          <div class="contact-fact">
+            <dt>Availability</dt>
+            <dd>Available for selected design projects</dd>
+          </div>
+          <div class="contact-fact">
+            <dt>Response</dt>
+            <dd>I'll get back to you as soon as possible.</dd>
+          </div>
+        </dl>
+
+        <div class="contact-projects">
+          <p class="contact-projects-label">What I can help with</p>
+          <ul class="contact-projects-list">
+            <li>Logo &amp; Brand Design</li>
+            <li>Vector Tracing / Raster to Vector</li>
+            <li>Print-Ready Artwork</li>
+            <li>Social Media Design</li>
+            <li>Promotional Graphics</li>
+            <li>Custom Graphic Design</li>
+          </ul>
+        </div>
+
+        <div class="contact-direct">
+          <p class="contact-direct-label">Prefer a direct message?</p>
+          <p class="contact-direct-text">Let's connect and discuss your project.</p>
+          <div class="contact-social" data-social-slot>
+            <!-- Social links to be added once real profile URLs are provided -->
+          </div>
+        </div>
+
+        <svg class="contact-mark" viewBox="0 0 160 160" aria-hidden="true">
+          <circle cx="80" cy="80" r="1" fill="none"/>
+          <rect x="20" y="20" width="120" height="120" fill="none" stroke="#7d4386" stroke-width="1"/>
+          <circle cx="80" cy="80" r="46" fill="none" stroke="#ca5693" stroke-width="1"/>
+          <path d="M50 100 L80 40 L110 100 Z" fill="none" stroke="#f8b65f" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- RIGHT: Form -->
+      <div class="contact-form-wrap" data-reveal data-reveal-delay="1">
+        <form id="contactForm" class="contact-form" novalidate data-endpoint="">
+
+          <div class="form-row">
+            <label for="fieldName">Name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="fieldName" name="name" placeholder="Your name" autocomplete="name" required>
+            <p class="field-error" id="errorName" role="alert" hidden>Please enter your name.</p>
+          </div>
+
+          <div class="form-row">
+            <label for="fieldEmail">Email <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="fieldEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            <p class="field-error" id="errorEmail" role="alert" hidden>Please enter a valid email address.</p>
+          </div>
+
+          <div class="form-row">
+            <label for="fieldProjectType">Project Type <span class="req" aria-hidden="true">*</span></label>
+            <select id="fieldProjectType" name="projectType" required>
+              <option value="" disabled selected>Select a project type</option>
+              <option value="logo-brand">Logo &amp; Brand Design</option>
+              <option value="vector-tracing">Vector Tracing / Raster to Vector</option>
+              <option value="print-ready">Print-Ready Design</option>
+              <option value="social-media">Social Media Design</option>
+              <option value="product-promo">Promotional Graphics</option>
+              <option value="custom">Custom Graphic Design</option>
+              <option value="other">Other</option>
+            </select>
+            <p class="field-error" id="errorProjectType" role="alert" hidden>Please select a project type.</p>
+          </div>
+
+          <div class="form-row">
+            <label for="fieldBudget">Budget <span class="optional">(optional)</span></label>
+            <select id="fieldBudget" name="budget">
+              <option value="not-sure" selected>Not sure yet</option>
+              <option value="under-50">Under $50</option>
+              <option value="50-100">$50–$100</option>
+              <option value="100-250">$100–$250</option>
+              <option value="250-plus">$250+</option>
+              <option value="custom">Custom / Discuss</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="fieldDetails">Project Details <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="fieldDetails" name="details" rows="5" placeholder="Tell me a little about your project, what you need, and any important requirements." required></textarea>
+            <p class="field-error" id="errorDetails" role="alert" hidden>Please share a few details about your project.</p>
+          </div>
+
+          <p class="form-note">You can share reference files after we connect.</p>
+
+          <button type="submit" class="btn btn-primary form-submit">Send Project Inquiry</button>
+
+          <div class="form-status" id="formStatus" role="status" hidden></div>
+        </form>
+
+        <div class="form-success" id="formSuccess" hidden>
+          <h3>Message Sent</h3>
+          <p>Thanks for reaching out. Your project inquiry has been received. I'll get back to you as soon as possible.</p>
+          <button type="button" class="btn btn-outline" id="sendAnother">Send Another Message</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section final-cta" data-reveal>
+    <div class="wrap final-cta-inner">
+      <h2>Not sure where to start?</h2>
+      <p>Tell me what you're working on. We can figure out the right design direction together.</p>
+      <div class="hero-actions">
+        <a href="portfolio.html" class="btn btn-primary">View My Work</a>
+        <a href="services.html" class="btn btn-outline">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <span class="brand-mark">HM</span>
+      <span class="brand-name">Haroon Mughal</span>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="footer-social" data-social-slot>
+      <!-- Social links to be added once real profile URLs are provided -->
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>&copy; <span id="year"></span> Haroon Mughal. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="contact.js"></script>
+</body>
+</html>

@@ -1,184 +1,57 @@
-# Haroon Mughal — Graphic Design Portfolio
+# Haroon Mughal GFX — Portfolio Website
 
-Yeh website original "christoph-nagel.dev" ke codebase par based hai — design, animations, layout, aur scroll behaviour same rakha gaya hai, lekin content, language aur branding poori tarah Haroon Mughal / @haroonmughalgfx ke liye customize kar di gayi hai.
+## Status
+- ✅ Home page (index.html) — complete
+- ✅ Portfolio page (portfolio.html) — complete, with category filters and lightbox
+- ✅ About page (about.html) — complete, with story, timeline, skills meters, philosophy quote
+- ✅ Services page (services.html) — complete, with expandable service cards and quick-overview list
+- ✅ Contact page (contact.html) — complete, with validated form, service-aware prefill, and honest not-yet-connected messaging (see "Connecting the contact form" below)
+- ⬜ Admin panel — not yet built
 
-**Tech stack:** Plain HTML + CSS + JavaScript (GSAP animation library). Koi backend, koi build step, koi framework nahi. Kisi bhi static hosting par directly chal jayegi.
+## Structure
+- `index.html` — homepage markup
+- `portfolio.html` — portfolio page markup (header, filters, grid, lightbox)
+- `portfolio-data.js` — the 12 placeholder projects as a plain JS array (title, category, descriptions, thumbnail). Replace `gradient` with a real `image` URL per project when ready; this is the single place to edit portfolio content.
+- `portfolio.js` — renders the grid from portfolio-data.js, handles category filtering and the lightbox (prev/next, Escape key, click-outside-to-close)
+- `about.html` — about page markup (intro, story, timeline, philosophy cards, skills, tools, quote, CTA)
+- `about.js` — timeline scroll-reveal and skill-meter fill animations
+- `services.html` — services page markup (header, service cards, quick overview, CTA)
+- `services-data.js` — the 6 services as a plain JS array (title, description, features, price, bestFor, icon). Edit this file only to change service content — no HTML editing needed.
+- `services.js` — renders service cards + overview rows from services-data.js, handles the "View Details" expand/collapse and staggered scroll reveal; "Discuss This Service" links pass `?service=<id>` to contact.html
+- `contact.html` — contact page markup (info column, validated form, success state, final CTA)
+- `contact.js` — client-side validation, reads `?service=` from the URL to preselect the matching Project Type option, and handles form submission (see note below)
+- `style.css` — full design system (colors, type, layout, animation) — shared by every page, including page-specific styles for portfolio, about, services and contact at the bottom
+- `script.js` — nav toggle, scroll reveals, stat counters, testimonial slider (shared across pages)
 
----
+## Connecting the contact form
+The form has no real backend yet, so it does not fake a successful submission. On a valid submit it currently shows a notice that the form isn't connected to an email service. To wire it up:
+1. Pick a form backend (Formspree, Netlify Forms, a custom API endpoint, etc.).
+2. Set `data-endpoint="<your endpoint URL>"` on `#contactForm` in contact.html.
+3. In contact.js, replace the commented-out `fetch(...)` block (in the submit handler) with a real POST request, and call `showSuccess()` only after a confirmed successful response.
+No other markup changes are needed — validation, the success-state UI, and the service-aware prefill are already built and ready.
 
-## ⚠️ Pehle yeh padho — Videos/Posters ke baare mein
+## Design tokens (defined in style.css :root)
+- `--purple-900: #3a335c`
+- `--purple-700: #7d4386`
+- `--pink-500: #ca5693`
+- `--peach-400: #f8b65f`
+- Display font: Fraunces / Body font: Inter (loaded via Google Fonts CDN in <head>)
 
-Jo ZIP di gayi thi, usme sirf **ek** video (`01-intro-hd.mp4`) aur **ek** poster image (`intro.jpg`) mojood the. Baaki 4 sections ke original videos/posters ZIP mein include hi nahi the — original website par hi missing thay.
+## Easy-to-edit placeholders
+- Portrait image: swap the `<svg class="portrait-placeholder">` inside `.portrait-frame` (in `data-portrait-slot`) for a real `<img>` tag — appears on both index.html and about.html.
+- Home page Featured Work thumbnails: replace the gradient `.work-thumb` spans with real project images.
+- Portfolio page projects: edit `portfolio-data.js` only — no HTML editing needed to add/remove/update a project.
+- About page story, timeline milestones, philosophy cards and quote: edit the text directly inside about.html's relevant sections.
+- About page skills: edit the `data-level` attribute (0–100) on each `.skill-row` in about.html — these are visual indicators, not measured percentages.
+- About page tools list: edit the `<li>` items inside `.tools-list` in about.html.
+- Stats: edit `data-count` / `data-suffix` attributes on `.stat-num` elements (index.html).
+- Testimonials: edit text directly inside `#testimonialTrack` (index.html).
+- Client marquee: edit the `<span>` brand names inside `.marquee-track` (kept in two identical sets for seamless looping — edit both).
+- Social links: add `<a>` icons inside the `data-social-slot` footer div once real profile URLs exist (present on every page).
+- Services: edit `services-data.js` only — title, description, feature list, price line and "best for" text all live there and feed both the service cards and the quick-overview list automatically.
+- Contact email / availability / response text / project types: edit directly inside contact.html (`.contact-facts`, `.contact-projects-list`).
 
-Isliye maine:
-- Sab 4 sections ke liye **naye placeholder poster images** bana di hain (dark background + section ka naam) taake site turant kaam kare aur har section visually alag lage.
-- Sab sections ka background video abhi **same intro video** use kar raha hai (kyunke koi aur video available nahi tha).
-
-**Tumhein karna hai:** apni khud ki photos/reels/clips se in placeholders ko replace karna — neeche exact paths diye hain.
-
----
-
-## 📁 Website Structure
-
-```
-christoph-nagel.dev/
-├── index.html              ← Main page (sab content yahan hai)
-├── impressum.html          ← Imprint / contact info (popup)
-├── datenschutz.html        ← Privacy notice (popup)
-├── styles.css              ← Saari styling (colours, fonts, layout, responsive)
-├── site.webmanifest.html   ← App name/theme metadata
-├── robots.txt              ← Search engine rules
-└── assets/
-    ├── favicon.svg         ← Browser tab icon ("HM" monogram)
-    ├── fonts/               ← Anton + Manrope font files
-    ├── images/
-    │   ├── grain.png        ← Background texture (mat chhedo)
-    │   └── profile/
-    │       └── haroon-mughal-placeholder.jpg   ← Replace with your real photo/logo
-    ├── posters/              ← Background image shown before/behind each section's video
-    │   ├── intro.jpg
-    │   ├── brand-identity.jpg
-    │   ├── social-media.jpg
-    │   ├── apparel-print.jpg
-    │   └── about.jpg
-    ├── videos/original/
-    │   └── 01-intro-hd.mp4   ← Currently used for ALL sections (see note above)
-    └── js/
-        ├── gsap.min.js       ← Animation library (mat chhedo)
-        └── script.js         ← Scroll/navigation logic (English comments, editable)
-```
-
-**Website ka main entry point:** `index.html`. Yeh ek single-page site hai — koi alag "pages" nahi hain (Imprint/Privacy sirf popups hain jo `impressum.html` / `datenschutz.html` ko iframe mein load karte hain).
-
-**JavaScript kis liye:** `script.js` scroll/swipe/keyboard se section-switching, video transitions, mobile menu, aur legal popups control karta hai. Yeh **data-driven** hai — matlab HTML ke `data-video`, `data-poster`, `id` attributes se kaam karta hai, isliye tum content change karte waqt JS ko touch nahi karoge (sirf 3 chhoti English strings already edit ho chuki hain).
-
-**Website static hai** — koi CMS, koi database, koi server-side code nahi.
-
----
-
-## 🖼️ Apni Images/Videos Kahan Dalni Hain
-
-| Kya | Kahan | Notes |
-|---|---|---|
-| Profile photo / logo | `assets/images/profile/` | Naam koi bhi rakh sakte ho — bas `index.html` mein JSON-LD ke `image.url` field mein naya filename likh dena |
-| Section 01 poster (Brand & Logo) | `assets/posters/brand-identity.jpg` | Same naam se apni image se replace karo |
-| Section 02 poster (Social Media) | `assets/posters/social-media.jpg` | — |
-| Section 03 poster (Apparel & Print) | `assets/posters/apparel-print.jpg` | — |
-| Section 04 poster (About) | `assets/posters/about.jpg` | — |
-| Intro poster | `assets/posters/intro.jpg` | Homepage ka pehla background |
-| Videos (background clips) | `assets/videos/original/` | Naya video daal kar `index.html` mein us section ke `data-video="assets/videos/original/APNA-FILE.mp4"` update kar dena |
-
-Recommended poster size: **1920×1080px**, `.jpg` format (halki file size rakho — 200–400KB range achi hai).
-
----
-
-## 📌 Portfolio Work Gallery — Important Note
-
-Original design ek **narrative scroll site** hai (4 fixed sections: Brand & Logo → Social Media → Apparel & Print → About) — isme koi "project grid" ya "case study gallery" system nahi hai jahan tum individual projects ek-ek karke add kar sako. Yeh original site ka bhi design nahi tha.
-
-Maine design ko as-is preserve kiya hai (jaisa instruction tha), lekin agar tumhein future mein **apne individual design projects ki gallery** chahiye (jaise "Project 1", "Project 2" cards), to woh ek naya section/page hoga jo maine abhi add nahi kiya — kyunke ye original layout se bahar jata hai. Agar chahiye to bata dena, main ek separate "Work" grid section bana dunga jo isi design language (colours, fonts, animations) mein match kare.
-
-Filhaal, apna best work `assets/posters/` ki 4 images ke through hi dikhaya ja sakta hai (har section ek category ki representative image dikhata hai).
-
----
-
-## ✏️ Basic Customization Guide
-
-### 1. Apna naam change karna
-File: `index.html`
-Search karo: `Haroon Mughal` — jahan bhi milе, apna naya naam likh do. Hero section mein yeh line hai:
-```html
-<strong>Haroon Mughal</strong>
-<span>Graphic Designer from Gujranwala, Pakistan — @haroonmughalgfx</span>
-```
-
-### 2. Profile picture change karna
-Folder: `assets/images/profile/`
-Apni image is folder mein dalo, phir `index.html` mein JSON-LD (`<script type="application/ld+json">`) ke andar `image.url` aur `image.contentUrl` fields ka filename update karo.
-
-### 3. Section content (text) change karna
-File: `index.html`
-Har section `<!-- EDIT: Section ... -->` comment se marked hai. Us comment ke neeche `<h2>` (title) aur `<p>` (paragraphs) tags ke andar apna text likh do.
-
-### 4. Social links change karna
-File: `index.html`
-Search karo `sameAs` — yeh JSON-LD ke andar hai:
-```json
-"sameAs": [
-  "https://www.instagram.com/haroonmughalgfx/",
-  "https://www.facebook.com/haroonmughalgfx/",
-  "https://www.behance.net/haroonmughalgfx",
-  "https://www.tiktok.com/@haroonmughalgfx"
-]
-```
-Apne asli profile links yahan dal do.
-
-### 5. Contact information change karna
-File: `index.html` — search karo `mailto:haroonmughalgfx@gmail.com` (2 jagah milega: nav aur mobile button).
-File: `impressum.html` — address/email yahan bhi hai.
-
-### 6. Website title change karna
-File: `index.html`, sabse upar:
-```html
-<title>Haroon Mughal | Graphic Designer — Branding, Apparel & Social Media Design</title>
-```
-
-### 7. Favicon change karna
-Folder: `assets/favicon.svg` — abhi "HM" monogram hai. Ise apni logo SVG se replace kar sakte ho (same filename rakho), ya text edit kar do.
-
-### 8. Colours/Fonts change karna
-File: `styles.css`, bilkul top pe ek guide comment hai. Colours yahan hain:
-```css
-:root {
-  --bg: #080808;      /* background */
-  --text: #f4f4f1;    /* text colour */
-  --red: #ff4b3e;      /* accent colour */
-}
-```
-Fonts: file ke top pe `@font-face` blocks mein naye font files daal sakte ho.
-
----
-
-## 💻 Local Par Kaise Chalayen
-
-Koi build step nahi chahiye. Sirf ek local server chala do (video/fetch security ki wajah se seedha file double-click karna kaam nahi karega):
-
-```bash
-cd christoph-nagel.dev
-python3 -m http.server 8000
-```
-Phir browser mein `http://localhost:8000` kholo.
-
-(VS Code use karte ho to "Live Server" extension bhi chalega.)
-
----
-
-## 🚀 Deploy Kaise Karen (sabse asaan: Cloudflare Pages)
-
-1. Is `christoph-nagel.dev` folder ko GitHub par ek naye repository mein push karo.
-2. [Cloudflare Pages](https://pages.cloudflare.com) par jao → "Create a project" → apna GitHub repo connect karo.
-3. Build settings: **koi build command nahi**, "Build output directory" ko `/` (root) rakho.
-4. Deploy dabao — kuch second mein live link mil jayega.
-
-GitHub Pages / Netlify / Vercel par bhi same tarah kaam karega — bas repo connect karo, build command khali chhodo, root directory serve karo.
-
----
-
-## ✅ Maine Kya Kya Change Kiya (Changelog)
-
-- **Language:** Poori website German se English mein convert ki (HTML text, JS strings, meta tags, JSON-LD, legal pages).
-- **Sections:** 4 content sections ko naye topics diye — Brand & Logo Design, Social Media Design, Apparel & Print, About (pehle: Webentwicklung, Fotografie, Videografie, Der Mensch dahinter).
-- **Branding:** Naam, initials (CN → HM), tagline ("Code. Kamera. Klartext." → "Concept. Craft. Colour."), email, social links, JSON-LD structured data sab Haroon Mughal / @haroonmughalgfx ke liye update kiye.
-- **Legal pages:** `impressum.html` aur `datenschutz.html` ko simple English placeholders se replace kiya (original German GDPR-specific legal text hata diya, kyunki woh Pakistan ke liye applicable nahi tha).
-- **Removed:** "English version" flag-link button (jo German site ki English mirror site se link karta tha) — ab poori site already English hai.
-- **New assets:** 4 placeholder poster images (har section ke liye), 1 profile-monogram placeholder, naya favicon ("HM").
-- **Code comments:** `index.html` mein `<!-- EDIT: ... -->` comments aur `styles.css` mein guide comments add kiye taake future editing asaan ho.
-- **Metadata:** Page title, meta description, Open Graph tags, manifest, robots.txt — sab update kiye.
-
-## 🔧 Baaki Kya Manually Karna Hai
-
-1. **Videos/posters replace karna** — sabse zaroori. Filhaal placeholders hain (upar dekho).
-2. **Real profile photo/logo** daalna `assets/images/profile/` mein.
-3. **Asli social media links** (Instagram, Facebook, Behance, TikTok) `index.html` ke JSON-LD mein daalna.
-4. **Domain decide karna** — abhi maine `haroonmughalgfx.com` placeholder use kiya hai (meta tags mein). Jo bhi asli domain/URL ho, wahan update kar dena.
-5. Agar **project gallery/grid** chahiye — mujhe bata dena, main isi design ke andar ek naya section bana dunga.
+## Notes for next steps
+- All pages should link `style.css` and `script.js` to stay visually consistent.
+- Keep the same header/footer markup across pages so navigation stays in sync.
+- All five pages (Home, About, Services, Portfolio, Contact) are now built and cross-linked. Next up per your instructions: the password-protected Admin Panel.

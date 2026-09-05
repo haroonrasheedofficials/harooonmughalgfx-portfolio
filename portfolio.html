@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Haroon Mughal</title>
+<meta name="description" content="Selected design work by Haroon Mughal (haroonmughalgfx) — branding, vector, print and social media design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,470;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="atmosphere" aria-hidden="true">
+  <span class="blob blob-a"></span>
+  <span class="blob blob-b"></span>
+  <span class="blob blob-c"></span>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-row">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">HM</span>
+      <span class="brand-name">Haroon&nbsp;Mughal</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="portfolio.html" class="nav-link is-active" aria-current="page">Portfolio</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+
+    <a href="contact.html" class="btn btn-ghost header-cta">Start a Project</a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ PAGE HEADER ============ -->
+  <section class="page-header">
+    <div class="wrap" data-reveal>
+      <p class="eyebrow">My Work</p>
+      <h1 class="page-title">Selected Work</h1>
+      <p class="page-desc">A selection of my design projects and creative work — branding, vector artwork, print and social media design.</p>
+    </div>
+  </section>
+
+  <!-- ============ FILTERS + GRID ============ -->
+  <section class="section portfolio-section" data-reveal>
+    <div class="wrap">
+
+      <div class="filter-bar" role="tablist" aria-label="Filter portfolio by category" id="filterBar">
+        <button class="filter-btn is-active" role="tab" aria-selected="true" data-filter="all">All Work</button>
+        <button class="filter-btn" role="tab" aria-selected="false" data-filter="branding">Branding &amp; Logo Design</button>
+        <button class="filter-btn" role="tab" aria-selected="false" data-filter="vector">Vector &amp; Print Design</button>
+        <button class="filter-btn" role="tab" aria-selected="false" data-filter="social">Social Media &amp; Promotional Design</button>
+      </div>
+
+      <div class="portfolio-grid" id="portfolioGrid"></div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Project detail" hidden>
+  <div class="lightbox-backdrop" data-lightbox-close></div>
+  <div class="lightbox-panel">
+    <button class="lightbox-close" data-lightbox-close aria-label="Close project view">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous project">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next project">&#8250;</button>
+
+    <div class="lightbox-media" id="lightboxMedia"></div>
+    <div class="lightbox-info">
+      <span class="lightbox-cat" id="lightboxCat"></span>
+      <h3 class="lightbox-title" id="lightboxTitle"></h3>
+      <p class="lightbox-desc" id="lightboxDesc"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <span class="brand-mark">HM</span>
+      <span class="brand-name">Haroon Mughal</span>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="footer-social" data-social-slot>
+      <!-- Social links to be added once real profile URLs are provided -->
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>&copy; <span id="year"></span> Haroon Mughal. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="portfolio-data.js"></script>
+<script src="portfolio.js"></script>
+</body>
+</html>
