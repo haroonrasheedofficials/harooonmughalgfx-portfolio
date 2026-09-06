@@ -146,13 +146,31 @@ main, .site-header, .site-footer{ position: relative; z-index: 1; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px; height: 34px;
+  width: var(--brand-mark-size, 34px);
+  height: var(--brand-mark-size, 34px);
+  flex: 0 0 auto;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--pink-500), var(--purple-700));
   font-family: var(--font-body);
   font-weight: 600;
   font-size: .72rem;
   letter-spacing: .02em;
+  overflow: hidden;
+}
+/* Real logo image: drops the gradient so the artwork itself shows through.
+   Swap assets/logo.png to change the logo site-wide.
+   Rounded-square crop suits a logo that carries its own background colour.
+   For a transparent-background logo, use border-radius: 0 and
+   object-fit: contain so the mark isn't cropped. */
+.brand-mark.has-logo{
+  background: none;
+  border-radius: 9px;
+}
+.brand-mark.has-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .main-nav{
   display: flex;
