@@ -7,30 +7,32 @@
   var formStatus = document.getElementById("formStatus");
   var formSuccess = document.getElementById("formSuccess");
   var sendAnother = document.getElementById("sendAnother");
+  var submitBtn = form.querySelector(".form-submit");
+  var submitLabel = submitBtn ? submitBtn.textContent : "";
+  var isSending = false;
+
+  /* ---------- Readable labels for the email body ---------- */
+  /* The <select> values are machine ids; the email should read in plain
+     English, so map each id to the label the visitor actually chose. */
+  function optionLabel(selectId, value){
+    var select = document.getElementById(selectId);
+    if (!select) return value;
+    var match = Array.prototype.find.call(select.options, function(opt){
+      return opt.value === value;
+    });
+    return match ? match.textContent.trim() : value;
+  }
 
   /* ---------- Service-aware prefill from ?service= param ---------- */
-  var SERVICE_ID_MAP = {
-    "logo-brand": "logo-brand",
-    "vector-tracing": "vector-tracing",
-    "print-ready": "print-ready",
-    "social-media": "social-media",
-    "product-promo": "product-promo",
-    "custom": "custom"
-  };
-
   function prefillFromQuery(){
-    var params = new URLSearchParams(window.location.search);
-    var serviceId = params.get("service");
+    var serviceId = new URLSearchParams(window.location.search).get("service");
     if (!serviceId) return;
     var select = document.getElementById("fieldProjectType");
     if (!select) return;
-    var mapped = SERVICE_ID_MAP[serviceId];
-    if (mapped){
-      var optionExists = Array.prototype.some.call(select.options, function(opt){
-        return opt.value === mapped;
-      });
-      if (optionExists) select.value = mapped;
-    }
+    var optionExists = Array.prototype.some.call(select.options, function(opt){
+      return opt.value === serviceId;
+    });
+    if (optionExists) select.value = serviceId;
   }
   prefillFromQuery();
 
@@ -79,57 +81,136 @@
     });
   });
 
-  /* ---------- Submit handling ---------- */
+  /* ---------- Status messaging ---------- */
+  function showStatus(message, isError){
+    formStatus.hidden = false;
+    formStatus.textContent = message;
+    formStatus.classList.toggle("is-error", !!isError);
+  }
+
+  function clearStatus(){
+    formStatus.hidden = true;
+    formStatus.textContent = "";
+    formStatus.classList.remove("is-error");
+  }
+
+  function setSending(sending){
+    isSending = sending;
+    if (!submitBtn) return;
+    submitBtn.disabled = sending;
+    submitBtn.setAttribute("aria-busy", sending ? "true" : "false");
+    submitBtn.textContent = sending ? "Sending…" : submitLabel;
+  }
+
+  function showSuccess(){
+    form.hidden = true;
+    formSuccess.hidden = false;
+    formSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  /* ---------- Payload ---------- */
+  /* FormSubmit turns each key into a labelled row in the email it sends, and
+     treats keys starting with "_" as settings rather than content. */
+  function buildPayload(){
+    var name = fields.name.input.value.trim();
+    var email = fields.email.input.value.trim();
+    var budgetEl = document.getElementById("fieldBudget");
+    var budget = budgetEl ? budgetEl.value : "";
+
+    return {
+      _subject: "New Project Inquiry — " + name,
+      _template: "table",
+      _captcha: "false",
+      _honey: (document.getElementById("fieldHoney") || {}).value || "",
+      Name: name,
+      Email: email,
+      "Project Type": optionLabel("fieldProjectType", fields.projectType.input.value),
+      Budget: budget ? optionLabel("fieldBudget", budget) : "Not specified",
+      "Project Details": fields.details.input.value.trim(),
+      "Submitted From": window.location.href
+    };
+  }
+
+  /* ---------- Submit ---------- */
   form.addEventListener("submit", function(e){
     e.preventDefault();
 
-    var allValid = Object.keys(fields).every(function(key){
-      return validateField(key);
-    });
+    // Guard against double-submits from a second click or an Enter keypress
+    // while the first request is still in flight.
+    if (isSending) return;
+
+    // map, not every: every() short-circuits, which would flag only the first
+    // bad field. Validate all of them so every error surfaces at once.
+    var results = Object.keys(fields).map(validateField);
+    var allValid = results.every(Boolean);
 
     if (!allValid){
       var firstInvalid = Object.keys(fields)
         .map(function(key){ return fields[key]; })
         .find(function(field){ return field.input.getAttribute("aria-invalid") === "true"; });
       if (firstInvalid) firstInvalid.input.focus();
+      showStatus("Please fix the highlighted fields and try again.", true);
       return;
     }
 
     var endpoint = form.getAttribute("data-endpoint");
-
     if (!endpoint){
-      /*
-       * No backend/email-service endpoint is configured yet.
-       * The form is fully validated and ready to submit, but we do not
-       * pretend a message was sent when nothing is actually wired up.
-       * Once a real endpoint (Formspree, Netlify Forms, custom API, etc.)
-       * is set up, set data-endpoint="<url>" on #contactForm and replace
-       * this branch with an actual fetch() POST, then show formSuccess
-       * only after a confirmed successful response.
-       */
-      formStatus.hidden = false;
-      formStatus.textContent = "This form isn't connected to an email service yet. Once it is, submitting will send your inquiry straight through — for now, please reach out directly using the email address on this page.";
-      formStatus.classList.add("is-notice");
+      showStatus(
+        "This form isn't configured with a delivery endpoint yet. Please email me directly using the address on this page.",
+        true
+      );
       return;
     }
 
-    // Placeholder for real integration:
-    // fetch(endpoint, { method: "POST", body: new FormData(form) })
-    //   .then(function(res){ if (res.ok) showSuccess(); else showError(); })
-    //   .catch(showError);
-  });
+    clearStatus();
+    setSending(true);
 
-  function showSuccess(){
-    form.hidden = true;
-    formSuccess.hidden = false;
-  }
+    fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(buildPayload())
+    })
+      .then(function(res){
+        return res.json()
+          .catch(function(){ return {}; })   // non-JSON body (e.g. a gateway error page)
+          .then(function(data){ return { ok: res.ok, data: data }; });
+      })
+      .then(function(result){
+        // FormSubmit returns success as the string "true", not a boolean.
+        var accepted = result.ok && String(result.data.success) === "true";
+        if (accepted){
+          setSending(false);
+          showSuccess();
+          return;
+        }
+        setSending(false);
+        showStatus(
+          result.data.message ||
+          "Something went wrong sending your inquiry. Please try again, or email me directly at haroonmughalgfx@gmail.com.",
+          true
+        );
+      })
+      .catch(function(){
+        // Network failure, offline, or a blocked request.
+        setSending(false);
+        showStatus(
+          "Your inquiry couldn't be sent — please check your connection and try again, or email me directly at haroonmughalgfx@gmail.com.",
+          true
+        );
+      });
+  });
 
   if (sendAnother){
     sendAnother.addEventListener("click", function(){
       form.reset();
+      prefillFromQuery();
       form.hidden = false;
       formSuccess.hidden = true;
-      formStatus.hidden = true;
+      clearStatus();
+      setSending(false);
       Object.keys(fields).forEach(function(key){ setFieldError(fields[key], false); });
       fields.name.input.focus();
     });

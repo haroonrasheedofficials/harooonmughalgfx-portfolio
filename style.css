@@ -1267,6 +1267,9 @@ img.portfolio-thumb{
   border-radius: var(--radius-m);
   background: var(--ink-800);
 }
+/* display:flex above outranks the hidden attribute's UA display:none, so the
+   form has to opt back out explicitly when JS swaps in the success panel. */
+.contact-form[hidden]{ display: none; }
 
 .form-row{ display: flex; flex-direction: column; gap: 8px; }
 .form-row label{
@@ -1318,6 +1321,18 @@ img.portfolio-thumb{
 
 .form-submit{ align-self: flex-start; }
 
+/* Honeypot: off-screen rather than display:none, so bots that skip hidden
+   fields still fill it. Never focusable or announced to screen readers. */
+.form-honey{
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .form-status{
   font-size: .88rem;
   padding: 14px 16px;
@@ -1326,6 +1341,20 @@ img.portfolio-thumb{
   border: 1px solid rgba(248,182,95,0.28);
   color: var(--text-hi);
 }
+/* Failed submission — pink to match the field-level error colour. */
+.form-status.is-error{
+  background: rgba(202,86,147,0.12);
+  border-color: rgba(202,86,147,0.4);
+}
+
+/* Sending state: keeps the button's gradient and size so the layout doesn't
+   shift, just signals that input is locked. */
+.form-submit[aria-busy="true"],
+.form-submit:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+}
+.form-submit:disabled:hover{ transform: none; }
 
 .form-success{
   padding: clamp(28px, 3vw, 40px);

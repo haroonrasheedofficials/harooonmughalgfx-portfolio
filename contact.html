@@ -107,7 +107,14 @@
 
       <!-- RIGHT: Form -->
       <div class="contact-form-wrap" data-reveal data-reveal-delay="1">
-        <form id="contactForm" class="contact-form" novalidate data-endpoint="">
+        <!--
+          Submissions POST to FormSubmit, which forwards them to the address in
+          the endpoint URL. No API key or secret is involved, so nothing
+          sensitive is exposed here. To send somewhere else, change the address
+          in data-endpoint (see README → "Connecting the contact form").
+        -->
+        <form id="contactForm" class="contact-form" novalidate
+              data-endpoint="https://formsubmit.co/ajax/haroonmughalgfx@gmail.com">
 
           <div class="form-row">
             <label for="fieldName">Name <span class="req" aria-hidden="true">*</span></label>
@@ -152,6 +159,13 @@
             <label for="fieldDetails">Project Details <span class="req" aria-hidden="true">*</span></label>
             <textarea id="fieldDetails" name="details" rows="5" placeholder="Tell me a little about your project, what you need, and any important requirements." required></textarea>
             <p class="field-error" id="errorDetails" role="alert" hidden>Please share a few details about your project.</p>
+          </div>
+
+          <!-- Spam trap: bots fill this, humans never see it. FormSubmit
+               silently discards any submission where _honey has a value. -->
+          <div class="form-honey" aria-hidden="true">
+            <label for="fieldHoney">Leave this field empty</label>
+            <input type="text" id="fieldHoney" name="_honey" tabindex="-1" autocomplete="off">
           </div>
 
           <p class="form-note">You can share reference files after we connect.</p>
