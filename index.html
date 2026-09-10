@@ -408,6 +408,13 @@
         font-size: 0.26em;
         color: var(--orange);
       }
+      @media (max-width: 640px) {
+        .loader__pct #pctNum {
+          /* Reserve room for 100 so changing digits cannot shift the counter. */
+          display: inline-block;
+          width: 3ch;
+        }
+      }
       .loader__tag {
         position: absolute;
         left: var(--pad);
