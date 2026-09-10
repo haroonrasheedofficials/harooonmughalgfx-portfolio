@@ -409,10 +409,28 @@
         color: var(--orange);
       }
       @media (max-width: 640px) {
+        .loader__pct {
+          /* Keep the entire counter box fixed so the changing digits cannot reflow it. */
+          width: 4.25em;
+          display: inline-flex;
+          align-items: baseline;
+          justify-content: flex-end;
+          white-space: nowrap;
+        }
+
         .loader__pct #pctNum {
-          /* Reserve room for 100 so changing digits cannot shift the counter. */
+          /* 3em is independent of each digit's glyph width and is large enough for 100. */
           display: inline-block;
-          width: 3ch;
+          width: 3em;
+          flex: 0 0 3em;
+          text-align: center;
+        }
+
+        .loader__pct sup {
+          display: inline-block;
+          width: 1em;
+          flex: 0 0 1em;
+          text-align: left;
         }
       }
       .loader__tag {
