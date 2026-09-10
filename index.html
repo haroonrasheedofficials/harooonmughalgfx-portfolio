@@ -408,22 +408,16 @@
         font-size: 0.26em;
         color: var(--orange);
       }
-      @media (max-width: 640px) {
-        .loader__pct {
-          /* Reserve only the space actually needed by 100%, so the counter stays stable without becoming oversized. */
-          display: inline-flex;
-          align-items: baseline;
-          justify-content: flex-end;
-          width: 2.2em;
-          white-space: nowrap;
-        }
+     @media (max-width: 640px) {
+  .loader {
+    overflow: hidden;
+  }
 
-        .loader__pct #pctNum {
-          display: inline-block;
-          width: 1.8em;
-          flex: 0 0 1.8em;
-          text-align: center;
-        }
+  .loader__pct #pctNum {
+    /* Reserve room for 100 so changing digits cannot shift the counter. */
+    display: inline-block;
+    width: 3ch;
+  }
 
         .loader__pct sup {
           display: inline-block;
