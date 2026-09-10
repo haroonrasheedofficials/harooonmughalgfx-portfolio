@@ -108,7 +108,7 @@ window.SITE = {
 
   services: [
     {
-      name: "Product & UX",
+      name: "Graphics design",
       count: "UX-01",
       desc: "The thinking that happens before the pretty part: research, user flows, wireframes and prototypes. I like to get the plan right before anyone starts arguing about colours.",
       chips: [
@@ -120,7 +120,7 @@ window.SITE = {
       ],
     },
     {
-      name: "Interfaces & Systems",
+      name: "Vector & Illustration",
       count: "UI-02",
       desc: "Interfaces built to last — proper design systems with reusable components and clear rules, so things still look right years (and several content editors) later.",
       chips: [
@@ -132,7 +132,7 @@ window.SITE = {
       ],
     },
     {
-      name: "Motion & Interaction",
+      name: "Social media design",
       count: "MO-03",
       desc: "Movement with a point. Transitions that help you understand the page, hovers that feel good, scrolling that tells a story. If an animation isn't doing a job, it doesn't make the cut.",
       chips: [
@@ -143,7 +143,7 @@ window.SITE = {
       ],
     },
     {
-      name: "Art Direction",
+      name: "Packaging & Branding",
       count: "AD-04",
       desc: "The taste layer: typography, imagery and layout that make a brand feel like itself on every screen — bold where it counts, quiet where it should be.",
       chips: ["Typography", "Layout systems", "Image direction", "Brand-in-UI"],
@@ -178,9 +178,9 @@ window.SITE = {
   ],
 
   awards: [
-    { name: "Awwwards", detail: "Honors" },
-    { name: "CSSDA", detail: "Best UX Design" },
-    { name: "Digital Impact Awards", detail: "Higher education work" },
-    { name: "Vega Digital Awards", detail: "Web design" },
+    { name: "Matric", detail: "Passed" },
+    { name: "Inter", detail: "Entering in industry" },
+    { name: "Top designer", detail: "Higher education work" },
+    { name: "GR on now", detail: "Senior designer" },
   ],
 };

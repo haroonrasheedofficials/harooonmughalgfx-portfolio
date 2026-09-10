@@ -2380,7 +2380,7 @@ design that gives every brand a visual identity worth remembering.
               </p>
               <div class="stats">
                 <div>
-                  <b class="num" data-count="12" data-suffix="+">0</b
+                  <b class="num" data-count="4" data-suffix="+">0</b
                   ><small>Years in design</small>
                 </div>
                 <div>
@@ -6038,23 +6038,23 @@ SOFTWARE.
             cells.push(i);
           }
           const o = { n: 0 };
-          gsap
-            .timeline({ onComplete: boot })
-            .to(o, {
-              n: 100,
-              duration: 1.9,
-              ease: "power3.inOut",
-              onUpdate() {
-                const n = Math.round(o.n);
-                pct.textContent = n;
-                fill.style.clipPath = `inset(${100 - n}% 0 0 0)`;
-              },
-            })
-            .to(".loader__logo", {
-              scale: 1.05,
-              duration: 0.25,
-              ease: "power2.out",
-            })
+         gsap
+  .timeline({ onComplete: boot })
+  .to(o, {
+    n: 100,
+    duration: desk ? 1.9 : 1.1,
+    ease: "power3.inOut",
+    onUpdate() {
+      const n = Math.round(o.n);
+      pct.textContent = n;
+      fill.style.clipPath = `inset(${100 - n}% 0 0 0)`;
+    },
+  })
+  .to(".loader__logo", {
+    scale: desk ? 1.05 : 1,
+    duration: desk ? 0.25 : 0.15,
+    ease: "power2.out",
+  })
             .set(cells, { opacity: 1 })
             .set(loader, { background: "transparent" })
             .set(".loader__logo,.loader__pct,.loader__tag", { opacity: 0 })
