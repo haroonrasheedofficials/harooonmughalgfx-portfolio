@@ -12,7 +12,7 @@ window.SITE = {
 
     socials: {
       linkedin: "https://www.linkedin.com/in/haroon-mughal-gfx/",
-      dribbble: "https://dribbble.com/VintiDesign",
+      Facebook: "https://Facebook.com/haroonmughalgfx",
       instagram: "https://www.instagram.com/haroonmughalgfx",
     },
   },
