@@ -4757,19 +4757,26 @@ SOFTWARE.
 
         /* smooth scroll */
         let lenis = null;
-        if (!reduced && typeof Lenis !== "undefined") {
-          try {
-            lenis = new Lenis({ lerp: 0.08 });
-            const raf = (t) => {
-              lenis.raf(t);
-              requestAnimationFrame(raf);
-            };
-            requestAnimationFrame(raf);
-            if (hasGSAP) lenis.on("scroll", ScrollTrigger.update);
-          } catch (e) {
-            lenis = null;
-          }
-        }
+
+if (!reduced && typeof Lenis !== "undefined" && desk) {
+  try {
+    lenis = new Lenis({ lerp: 0.08 });
+
+    const raf = (t) => {
+      if (!lenis) return;
+      lenis.raf(t);
+      requestAnimationFrame(raf);
+    };
+
+    requestAnimationFrame(raf);
+
+    if (hasGSAP) {
+      lenis.on("scroll", ScrollTrigger.update);
+    }
+  } catch (e) {
+    lenis = null;
+  }
+}
         const toTop = () =>
           lenis ? lenis.scrollTo(0, { immediate: true }) : scrollTo(0, 0);
         const scrollToEl = (el) => {
@@ -4787,8 +4794,11 @@ SOFTWARE.
         const STRIPS = [];
         function buildPixelStrip(el) {
           el.innerHTML = "";
-          const cols = Math.max(10, Math.round(innerWidth / 80)),
-            rows = 6;
+          const cols = Math.max(
+    10,
+    Math.round(innerWidth / (desk ? 80 : 120))
+  ),
+  rows = desk ? 6 : 5;
           el.style.gridTemplateColumns = `repeat(${cols},1fr)`;
           el.style.gridTemplateRows = `repeat(${rows},1fr)`;
           const up = el.dataset.pxt !== "down";
@@ -4808,31 +4818,55 @@ SOFTWARE.
           }
           STRIPS.push({ el, cells, last: -1 });
         }
-        (function pixelLoop() {
-          const vh = innerHeight;
-          for (let s = STRIPS.length - 1; s >= 0; s--) {
-            const strip = STRIPS[s];
-            if (!document.contains(strip.el)) {
-              STRIPS.splice(s, 1);
-              continue;
-            }
-            if (strip.el.offsetParent === null) continue; /* hidden page */
-            const r = strip.el.getBoundingClientRect();
-            if (r.bottom < -100 || r.top > vh + 100) continue;
-            let p = (vh * 0.96 - r.top) / (vh * 0.66 + r.height);
-            p = Math.max(0, Math.min(1, p));
-            if (Math.abs(p - strip.last) < 0.008) continue;
-            strip.last = p;
-            for (const c of strip.cells) {
-              const on = p > c._t;
-              if (on !== c._on) {
-                c._on = on;
-                c.style.opacity = on ? 1 : 0;
-              }
-            }
-          }
-          requestAnimationFrame(pixelLoop);
-        })();
+       (function pixelLoop() {
+  let lastFrame = 0;
+
+  function loop(now) {
+    if (now - lastFrame < (desk ? 16 : 32)) {
+      requestAnimationFrame(loop);
+      return;
+    }
+
+    lastFrame = now;
+
+    const vh = innerHeight;
+
+    for (let s = STRIPS.length - 1; s >= 0; s--) {
+      const strip = STRIPS[s];
+
+      if (!document.contains(strip.el)) {
+        STRIPS.splice(s, 1);
+        continue;
+      }
+
+      if (strip.el.offsetParent === null) continue;
+
+      const r = strip.el.getBoundingClientRect();
+
+      if (r.bottom < -100 || r.top > vh + 100) continue;
+
+      let p = (vh * 0.96 - r.top) / (vh * 0.66 + r.height);
+      p = Math.max(0, Math.min(1, p));
+
+      if (Math.abs(p - strip.last) < 0.008) continue;
+
+      strip.last = p;
+
+      for (const c of strip.cells) {
+        const on = p > c._t;
+
+        if (on !== c._on) {
+          c._on = on;
+          c.style.opacity = on ? 1 : 0;
+        }
+      }
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+})();
 
         /* generic pixel-cell stagger (menu / fallbacks) — gsap-free */
         function staggerCells(cells, on, total = 420) {
@@ -5156,8 +5190,14 @@ SOFTWARE.
         function buildMenuPx() {
           menuPx.innerHTML = "";
           menuCells = [];
-          const cols = Math.max(8, Math.round(innerWidth / 110)),
-            rows = Math.max(5, Math.round(innerHeight / 110));
+          const cols = Math.max(
+    8,
+    Math.round(innerWidth / (desk ? 100 : 150))
+  ),
+  rows = Math.max(
+    5,
+    Math.round(innerHeight / (desk ? 100 : 140))
+  );
           menuPx.style.gridTemplateColumns = `repeat(${cols},1fr)`;
           menuPx.style.gridTemplateRows = `repeat(${rows},1fr)`;
           for (let k = 0; k < cols * rows; k++) {
@@ -5439,7 +5479,14 @@ SOFTWARE.
             console.warn("home anim", e);
           }
           bindMagnets(pageHome);
-          if (hasGSAP) ScrollTrigger.refresh();
+
+if (hasGSAP) {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+  });
+}
         }
 
         function heroIn() {
@@ -6007,24 +6054,37 @@ SOFTWARE.
         const deepAbout = h0 === "#/about";
 
         function boot() {
-          loader.remove();
-          try {
-            if (deepCase) {
-              showCase(deepCase[1]);
-            } else if (deepWork) {
-              showWork();
-            } else if (deepAbout) {
-              showAbout();
-            } else {
-              animateHome();
-            }
-          } catch (e) {
-            console.warn("boot", e);
-            animateHome();
-          }
-          bindCursor(document);
-          bindMagnets(document);
-        }
+  loader.remove();
+
+  bindCursor(document);
+  bindMagnets(document);
+
+  const startPage = () => {
+    try {
+      if (deepCase) {
+        showCase(deepCase[1]);
+      } else if (deepWork) {
+        showWork();
+      } else if (deepAbout) {
+        showAbout();
+      } else {
+        animateHome();
+      }
+    } catch (e) {
+      console.warn("boot", e);
+      try {
+        animateHome();
+      } catch (err) {
+        console.warn("animateHome", err);
+      }
+    }
+  };
+
+  // Let the loader-removal paint finish before heavy GSAP/ScrollTrigger work.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(startPage);
+  });
+}
 
         if (animOn) {
           const cols = Math.max(8, Math.round(innerWidth / 100)),
