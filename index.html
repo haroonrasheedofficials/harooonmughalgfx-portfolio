@@ -6089,7 +6089,7 @@ if (hasGSAP) {
   });
 }
 
-        if (animOn) {
+        if (animOn && desk) {
           const cols = Math.max(8, Math.round(innerWidth / 100)),
             rows = Math.max(5, Math.round(innerHeight / 100));
           lGrid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
