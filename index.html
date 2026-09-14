@@ -6056,7 +6056,7 @@ if (hasGSAP) {
         const deepWork = h0 === "#/work";
         const deepAbout = h0 === "#/about";
 
-        function boot() {
+       function boot() {
   loader.remove();
 
   bindCursor(document);
@@ -6073,17 +6073,24 @@ if (hasGSAP) {
       } else {
         animateHome();
       }
+
+      // Mobile: loader nahi chalega, is liye hero ko directly visible karo
+      if (!desk && !deepCase && !deepWork && !deepAbout) {
+        heroInstant();
+      }
     } catch (e) {
       console.warn("boot", e);
       try {
         animateHome();
+        if (!desk && !deepCase && !deepWork && !deepAbout) {
+          heroInstant();
+        }
       } catch (err) {
         console.warn("animateHome", err);
       }
     }
   };
 
-  // Let the loader-removal paint finish before heavy GSAP/ScrollTrigger work.
   requestAnimationFrame(() => {
     requestAnimationFrame(startPage);
   });
