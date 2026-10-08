@@ -3,7 +3,7 @@ window.SITE = {
     name: "Haroon Mughal",
     role: "Graphic Designer",
     location: "Lahore, Pakistan",
-    email: "haroonmughalgfx@gmail.com",
+    email: "designto@haroonmughalgfx.online",
     domain: "haroonmughalgfx.online",
     availability: "Open for select projects",
 
